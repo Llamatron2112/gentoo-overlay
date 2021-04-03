@@ -19,5 +19,11 @@ RDEPEND="${DEPEND}"
 BDEPEND=""
 
 pkg_postinst() {
+	echo "Creating udev rules"
 	rivalcfg --update-udev
+}
+
+pkg_prerm() {
+	echo "Deleting udev rules"
+	rm /etc/udev/rules.d/99-steelseries-rival.rules
 }
