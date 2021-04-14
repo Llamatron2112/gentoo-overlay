@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{7..9} )
 
-inherit distutils-r1 linux-mod udev
+inherit distutils-r1 linux-mod udev systemd
 
 DESCRIPTION="Razer Drivers for Linux"
 HOMEPAGE="https://openrazer.github.io/"
@@ -13,6 +13,8 @@ SRC_URI="https://github.com/openrazer/openrazer/archive/v${PV}.tar.gz -> ${P}.ta
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
+
+IUSE="systemd"
 
 RDEPEND="media-libs/libsdl2
 	media-libs/sdl2-image
@@ -83,4 +85,8 @@ src_install() {
 		popd
 	}
 	python_foreach_impl mypython_install
+
+	if use systemd ; then
+		systemd_douserunit "${FILESDIR}/openrazer-daemon.service"
+	fi
 }
